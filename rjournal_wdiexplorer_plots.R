@@ -114,19 +114,17 @@ selfcontained = TRUE
 
 #### creating a folder for all the plots
 
-# 1. List all HTML files inside your folder
+# a list of all HTML files inside the interactive-plots folder
 files <- list.files("interactive-plots", pattern = "\\.html$", full.names = FALSE)
 
-# 2. Create clickable HTML links for each file
 links <- paste0("<li><a href='interactive-plots/", files, "'>", files, "</a></li>")
 
-# 3. Build the complete HTML page as one big string
-index_html <- paste0(
-  "<!DOCTYPE html><html><head><title>My Widget Gallery</title></head><body>",
-  "<h1>My Widget Gallery</h1><ul>",
+
+wdiexplorer_interactive_plot_html <- paste0(
+  "<!DOCTYPE html><html><head><title>PM2.5 air pollution data interactive plots of the wdiexplorer R package gallery</title></head><body>",
+  "<h1>PM2.5 air pollution data interactive plots of the wdiexplorer R package gallery</h1><ul>",
   paste(links, collapse = "\n"),
   "</ul></body></html>"
 )
 
-# 4. Save that page as 'index.html' in your main working folder
-writeLines(index_html, "index.html")
+writeLines(wdiexplorer_interactive_plot_html, "index.html")
