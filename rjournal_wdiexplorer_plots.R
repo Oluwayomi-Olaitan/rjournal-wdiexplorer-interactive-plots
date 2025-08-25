@@ -8,6 +8,10 @@ dir.create("interactive-plots", showWarnings = FALSE)
 # use the get_wdi_data() function to fetch the data set from the WDI
 pm_data <- get_wdi_data(indicator = "EN.ATM.PM25.MC.M3")
 
+# `compute_trend_shape_features()` function
+
+pm_trend_shape <- compute_trend_shape_features(pm_data)
+
 # `compute_diagnostic_indices()` function
 
 pm_diagnostic_metrics <- compute_diagnostic_indices(pm_data, group_var = "region")
@@ -43,12 +47,17 @@ selfcontained = TRUE
 ### The ungrouped and grouped data series trajectories with top 4% countries
 #  highlighted based on the absolute values of the linearity measures.
 
-pm_diagnostic_metrics_group <- pm_diagnostic_metrics_group |>
+pm_trend_shape <- pm_trend_shape |>
   dplyr::mutate(abs_linearity = abs(linearity))
+
+pm_trend_shape_group <- add_group_info(
+  metric_summary = pm_trend_shape, 
+  pm_data
+)
 
 saveWidget(plot_data_trajectories(
   pm_data, 
-  metric_summary = pm_diagnostic_metrics_group, 
+  metric_summary = pm_trend_shape_group, 
   metric_var = "abs_linearity",
   percentile = 0.96
 ),
@@ -59,7 +68,7 @@ selfcontained = TRUE
 
 saveWidget(plot_data_trajectories(
   pm_data, 
-  metric_summary = pm_diagnostic_metrics_group, 
+  metric_summary = pm_trend_shape_group, 
   metric_var = "abs_linearity",
   group_var = "region",
   percentile = 0.96
